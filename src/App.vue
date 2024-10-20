@@ -43,9 +43,10 @@ import Header from "/src/components/Header.vue"
 import CartSneakerList from './components/CartSneakerList.vue'
 import SideBar from "./components/Sidebars/SideBar.vue";
 
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, provide } from "vue";
 
 const sneakers = ref([]);
+const favorites = ref([])
 
 const searchQuery = ref('')
 const sortBy = ref('')
@@ -108,10 +109,28 @@ const fetchFavorites = async () => {
 }
 
 //Добавление избранных:
-// const addToFavorites = () => {
-//   sneakers.isFavorites = !sneakers.isFavorites
-//   console.log(sneakers.isFavorites)
-// }
+const addToFavorites = async (sneaker) => {
+  try {
+    if (!sneaker.isFavorites) {
+      const obj = {
+        parentId: sneaker.id
+      }
+      const { data } = await axios.post(`https://0e24b4ab02c94085.mokky.dev/favorites`, obj)
+      sneaker.isFavorites = true
+      sneaker.favoriteId = data.id //Сохраняем айди добавленных в избранное
+      favorites.value = data
+    } else {
+      await axios.delete(`https://0e24b4ab02c94085.mokky.dev/favorites/${sneaker.favoriteId}`)
+      sneaker.isFavorites = false
+      sneaker.favoriteId = null //Удаляем айди добавленных в избранное, если удаляется из избранного
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+console.log(favorites.value)
+
 
 onMounted(async () => {
   await fetchSneakers();
@@ -120,6 +139,6 @@ onMounted(async () => {
 
 watch([searchQuery, sortBy], () => {
   fetchSneakers();
-});
+})
 
 </script>
