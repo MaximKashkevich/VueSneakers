@@ -1,7 +1,6 @@
 <template>
     <nav class="card">
-        <img @click="addToFavorites" class="favorite-icon"
-            :src="isFavorites ? '/public/assets/favoriteTrue.svg' : '/public/assets/favoriteFalse.svg'" alt="favorite">
+        <img @click="addToFavorites" class="favorite-icon" src="/public/assets/favoriteTrue.svg" alt="favorite">
         <img class="sneaker-image" :src="props.imageUrl" alt="sneakerTest">
         <div class="description">
             <p>{{ title }}</p>
@@ -25,8 +24,8 @@ const props = defineProps({
     price: Number,
     imageUrl: String,
     title: String,
-    isFavorites: Boolean,
-    addToFavorites: Function
+    // isFavorites: Boolean,
+    // addToFavorites: Function
 });
 
 </script>

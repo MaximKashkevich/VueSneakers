@@ -108,10 +108,10 @@ const fetchFavorites = async () => {
 }
 
 //Добавление избранных:
-const addToFavorites = () => {
-  sneakers.isFavorites = !sneakers.isFavorites
-  console.log(sneakers.isFavorites)
-}
+// const addToFavorites = () => {
+//   sneakers.isFavorites = !sneakers.isFavorites
+//   console.log(sneakers.isFavorites)
+// }
 
 onMounted(async () => {
   await fetchSneakers();
