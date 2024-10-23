@@ -29,7 +29,7 @@
       </nav>
       <!-- КАРТОЧКИ -->
 
-      <CartSneakerList :addToFavorites="addToFavorites" :sneakers="sneakers" />
+      <CartSneakerList :onClickAddPlus="onClickAddPlus" :addToFavorites="addToFavorites" :sneakers="sneakers" />
     </section>
   </main>
 
@@ -43,10 +43,10 @@ import Header from "/src/components/Header.vue"
 import CartSneakerList from './components/CartSneakerList.vue'
 import SideBar from "./components/Sidebars/SideBar.vue";
 
-import { onMounted, ref, watch, provide } from "vue";
+import { onMounted, provide, ref, watch } from "vue";
 
 const sneakers = ref([]);
-const favorites = ref([])
+const cart = ref([])
 
 const searchQuery = ref('')
 const sortBy = ref('')
@@ -74,7 +74,7 @@ const fetchSneakers = async () => {
     sneakers.value = data.map((obj) => {
       return {
         ...obj,
-        isAdd: false,
+        isAdded: false,
         isFavorites: false,
       }
     });
@@ -100,7 +100,6 @@ const fetchFavorites = async () => {
         return item
       }
     })
-    console.log(sneakers.value)
   } catch (e) {
     console.log(e)
   }
@@ -118,7 +117,6 @@ const addToFavorites = async (sneaker) => {
       const { data } = await axios.post(`https://0e24b4ab02c94085.mokky.dev/favorites`, obj)
       sneaker.isFavorites = true
       sneaker.favoriteId = data.id //Сохраняем айди добавленных в избранное
-      favorites.value = data
     } else {
       await axios.delete(`https://0e24b4ab02c94085.mokky.dev/favorites/${sneaker.favoriteId}`)
       sneaker.isFavorites = false
@@ -129,8 +127,29 @@ const addToFavorites = async (sneaker) => {
   }
 }
 
-console.log(favorites.value)
+//Добавление в корзину:
 
+const onClickAddPlus = (sneaker) => {
+  if (!sneaker.isAdded) {
+    addToCart(sneaker)
+  } else {
+    removeFromCart(sneaker)
+  }
+}
+
+// Удаление карточки:
+
+const removeFromCart = (sneaker) => {
+  cart.value.splice(cart.value.indexOf(sneaker), 1)
+  sneaker.isAdded = false
+}
+
+//Добавление карточки:
+
+const addToCart = (sneaker) => {
+  cart.value.push(sneaker)
+  sneaker.isAdded = true
+}
 
 onMounted(async () => {
   await fetchSneakers();
@@ -140,5 +159,12 @@ onMounted(async () => {
 watch([searchQuery, sortBy], () => {
   fetchSneakers();
 })
+
+provide('cart', {
+  cart,
+  removeFromCart,
+  addToCart
+}
+)
 
 </script>

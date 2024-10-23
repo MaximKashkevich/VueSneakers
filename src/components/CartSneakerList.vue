@@ -14,8 +14,10 @@ import CartSneakers from './CartSneakers.vue';
 
 defineProps({
     sneakers: Array,
-    addToFavorites: Function
+    addToFavorites: Function,
+    onClickAddPlus: Function,
 })
+
 
 </script>
 
@@ -23,6 +25,7 @@ defineProps({
     <section class="mx-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-9">
         <CartSneakers v-for="item in sneakers" :key="item.id" :id="item.id" :title="item.title"
             :imageUrl="item.imageUrl" :price="item.price" :isFavorites="item.isFavorites" :isAdded="item.isAdded"
-            :addToFavorites="addToFavorites" :onClickFavorite="() => addToFavorites(item)" />
+            :addToFavorites="addToFavorites" :onClickAddPlus="() => onClickAddPlus(item)"
+            :onClickFavorite="() => addToFavorites(item)" />
     </section>
 </template>

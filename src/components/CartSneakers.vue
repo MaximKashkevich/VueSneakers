@@ -12,21 +12,23 @@
                 <span class="price-value">{{ price }} руб.</span>
             </div>
             <div class="add-icon">
-                <img src="/public/assets/addTrue.svg" alt="add">
+                <img @click="onClickAddPlus"
+                    :src="isAdded ? '/public/assets/addTrue.svg' : '/public/assets/addFalse.svg'" alt="add">
             </div>
         </div>
     </nav>
 </template>
 <script setup>
-
 const props = defineProps({
     id: Number,
     price: Number,
     imageUrl: String,
     title: String,
     addToFavorites: Function,
+    idAdd: Boolean,
     isFavorites: Boolean,
-    onClickFavorite: Function
+    onClickFavorite: Function,
+    onClickAddPlus: Function
 });
 </script>
 
@@ -90,9 +92,9 @@ const props = defineProps({
 }
 
 .add-icon img {
-    width: 24px;
+    width: 26px;
     /* подходящий размер для иконки */
-    height: 24px;
+    height: 26px;
     /* подходящий размер для иконки */
 }
 
