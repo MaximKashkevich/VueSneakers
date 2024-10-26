@@ -1,11 +1,32 @@
 <template>
-    <main class="fixed w-full h-full bg-black opacity-50 z-20"></main>
-    <section class="fixed z-30 w-[90%] md:w-[30%] bg-white h-full right-0">
+    <main class="fixed w-full h-full bg-black opacity-60 z-20"></main>
+    <section class="fixed z-30 w-[90%] md:w-[30%] bg-white h-full right-0 flex flex-col overflow-y-auto">
         <nav class="p-4">
-            <img @click="toggleSideBar" class="ml-5 cursor-pointer" width="20" height="20"
-                src="/public/SideBarImg/Exit.svg" alt="Exit">
-            <h1 class="font-bold text-[24px] leading-[29.05px] mt-4 ml-5 mb-6">Корзина</h1>
-            <SideBarCardList :sneakers="sneakers" :cart="cart" />
+            <SideBarHead :toggleSideBar="toggleSideBar" />
+            <!-- Карточки -->
+            <div>
+                <SideBarCardList :sneakers="sneakers" :cart="cart" />
+            </div>
+
+            <nav>
+                <div class="flex gap-2 mx-5 mt-3">
+                    <span>Итого:</span>
+                    <div class="flex-1 border-b border-dashed"></div>
+                    <b>{{ totalPrice }} руб.</b>
+                </div>
+                <div class="flex gap-2 mx-5 mt-3">
+                    <span>Налог 5%:</span>
+                    <div class="flex-1 border-b border-dashed"></div>
+                    <b>{{ discountedPrice }} руб.</b>
+                </div>
+                <button
+                    class="py-5 w-full rounded-[18px] items-center flex justify-center bg-lime-500 mt-3 transition hover:-translate-y-1">
+                    <span class="flex items-center">
+                        <b class="text-white mr-3">Оформить заказ</b>
+                        <img src="/public/SideBarImg/enter.svg" alt="enter">
+                    </span>
+                </button>
+            </nav>
         </nav>
     </section>
 </template>
@@ -13,14 +34,15 @@
 <script setup>
 
 import SideBarCardList from './SideBarCardList.vue';
-import { defineProps } from 'vue';
+import SideBarHead from './SideBarHead.vue';
+import { computed, defineProps } from 'vue';
 
 const props = defineProps({
-    toggleSideBar: Function, //Получаем метод
-    sideBarOpen: Boolean
+    totalPrice: Number,
+    toggleSideBar: Function
 })
 
-const toggleSideBar = () => {
-    props.toggleSideBar() //Вытаскиваем и вызываем метод
-}
+// Вычисляем налог (5% от totalPrice)
+const discountedPrice = computed(() => props.totalPrice * 0.05);
+
 </script>

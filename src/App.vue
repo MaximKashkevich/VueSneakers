@@ -1,7 +1,7 @@
 <template>
-  <SideBar :sideBarOpen="sideBarOpen" :toggleSideBar="toggleSideBar" v-if="sideBarOpen" />
+  <SideBar :toggleSideBar="toggleSideBar" :totalPrice="totalPrice" v-if="sideBarOpen" />
   <main class=" w-4/5 h-full bg-white m-auto rounded-[20px] pb-10">
-    <Header :sideBarOpen="sideBarOpen" :toggleSideBar="toggleSideBar" />
+    <Header :toggleSideBar="toggleSideBar" :totalPrice="totalPrice" />
     <div class="border-b mt-10"></div>
     <section class="mt-10">
       <!-- ПОИСК -->
@@ -43,19 +43,30 @@ import Header from "/src/components/Header.vue"
 import CartSneakerList from './components/CartSneakerList.vue'
 import SideBar from "./components/Sidebars/SideBar.vue";
 
-import { onMounted, provide, ref, watch } from "vue";
+import { onMounted, provide, ref, watch, computed } from "vue";
 
+//Кроссовки
 const sneakers = ref([]);
+
+// Корзина
 const cart = ref([])
 
+//Общая стоимость
+const totalPrice = computed(() => cart.value.reduce((acc, item) => acc + item.price, 0))
+
+//Поиск
 const searchQuery = ref('')
+
+//Сортировка
 const sortBy = ref('')
 
+//Открытый ли боковой меню
 const sideBarOpen = ref(false)
 const toggleSideBar = () => {
   sideBarOpen.value = !sideBarOpen.value;
 };
 
+//Обновление значния поиска и сортировки
 const onChangeSearch = event => {
   searchQuery.value = event.target.value;
 }
@@ -163,8 +174,13 @@ watch([searchQuery, sortBy], () => {
 provide('cart', {
   cart,
   removeFromCart,
-  addToCart
+  addToCart,
 }
 )
+
+provide('sidebar', {
+  sideBarOpen,
+  toggleSideBar,
+});
 
 </script>

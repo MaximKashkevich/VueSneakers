@@ -1,5 +1,5 @@
 <template>
-    <header class="flex flex-col md:flex-row items-center justify-between mx-10 py-4shadow">
+    <header class="flex flex-col md:flex-row items-center justify-between mx-10 py-4">
         <section class="flex items-center mt-4 md:mt-0">
             <img width="40" height="40" src="/public/HeaderImg/headerLogo.png" alt="headerLogo">
             <nav class="ml-4">
@@ -11,7 +11,8 @@
             <nav class="flex items-center mx-4">
                 <img @click="toggleSideBar" class="cursor-pointer" src="/public/HeaderImg/shopHeader.svg"
                     alt="shopHeader">
-                <p @click="toggleSideBar" class="leading-[16.94px] text-gray-600 mx-2 cursor-pointer">1205 руб.</p>
+                <p @click="toggleSideBar" class="leading-[16.94px] text-gray-600 mx-2 cursor-pointer">{{ totalPrice }}
+                    руб.</p>
             </nav>
             <nav class="flex items-center mx-4">
                 <img class="cursor-pointer" src="/public/HeaderImg/favoriteHeader.svg" alt="HeaderImg">
@@ -26,14 +27,10 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { inject } from 'vue';
 
+const { toggleSideBar } = inject('sidebar'); // Получаем метод
 const props = defineProps({
-    sideBarOpen: Boolean,
-    toggleSideBar: Function // Принимаем метод toggleSideBar 
+    totalPrice: Number,
 });
-
-const toggleSideBar = () => {
-    props.toggleSideBar(); // Вызываем метод, полученный из props
-};
 </script>
