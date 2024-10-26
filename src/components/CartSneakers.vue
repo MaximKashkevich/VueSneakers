@@ -1,7 +1,7 @@
 <template>
     <nav class="card">
         <img @click="onClickFavorite" class="favorite-icon"
-            :src='isFavorites ? "/public/assets/favoriteTrue.svg" : "/public/assets/favoriteFalse.svg"' alt="favorite">
+            :src='isFavorites ? "/assets/favoriteTrue.svg" : "/assets/favoriteFalse.svg"' alt="favorite">
         <img class="sneaker-image" :src="props.imageUrl" alt="sneakerTest">
         <div class="description">
             <p>{{ title }}</p>
@@ -12,8 +12,7 @@
                 <span class="price-value">{{ price }} руб.</span>
             </div>
             <div class="add-icon">
-                <img @click="onClickAddPlus"
-                    :src='isAdded ? "/public/assets/addTrue.svg" : "/public/assets/addFalse.svg"' alt="add">
+                <img @click="onClickAddPlus" :src='isAdded ? "/assets/addTrue.svg" : "/assets/addFalse.svg"' alt="add">
             </div>
         </div>
     </nav>
